@@ -37,15 +37,20 @@ export const venueSlice = createSlice({
   
   ],
   reducers: {
-   
+    //Function That handles the invrementing of of the venue item.
+    //action contains infromaiton on the item to be incremented.
     incrementQuantity: (state, action) => {
       const { payload: index } = action;
+      //Checks if item exists 
       if (state[index]) {
+        //Checks if Equals Auditorium Hall and is greater or equal to 3
+        //If it is the code returns it to the function that called it
         if (state[index].name === " Auditorium Hall (Capacity:200)" && state[index].quantity >= 3) {
           return;        }
         state[index].quantity++;
       }
     },
+    //Funtion is similar to incrementQuantity, but decreases the value instead
     decrementQuantity: (state, action) => {
       const { payload: index } = action;
       if (state[index] && state[index].quantity > 0) {
