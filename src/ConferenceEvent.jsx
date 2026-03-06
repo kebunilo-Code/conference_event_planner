@@ -6,8 +6,10 @@ import { incrementQuantity, decrementQuantity } from "./venueSlice";
 const ConferenceEvent = () => {
     const [showItems, setShowItems] = useState(false);
     const [numberOfPeople, setNumberOfPeople] = useState(1);
+    // variable pulls infromation and methods from venueSlice.js
     const venueItems = useSelector((state) => state.venue);
     const dispatch = useDispatch();
+    //As the name describes, it calculates the remaning number of seats wihin the venue
     const remainingAuditoriumQuantity = 3 - venueItems.find(item => item.name === "Auditorium Hall (Capacity:200)").quantity;
 
     
@@ -15,14 +17,16 @@ const ConferenceEvent = () => {
         console.log("handleToggleItems called");
         setShowItems(!showItems);
     };
-
+    // Handles the Increase in quantity of tickets for the venue
     const handleAddToCart = (index) => {
+        //If the name within venue is "Auditorium Hall (Capacity:200)" and the qunatity is greater then 3, it returns to the function that called it
         if (venueItems[index].name === "Auditorium Hall (Capacity:200)" && venueItems[index].quantity >= 3) {
           return; 
         }
+        //Runs if the stated if statement is not true
         dispatch(incrementQuantity(index));
       };
-    
+      //Similar to the handleAddToCart, but it decreases the quantity
       const handleRemoveFromCart = (index) => {
         if (venueItems[index].quantity > 0) {
           dispatch(decrementQuantity(index));
