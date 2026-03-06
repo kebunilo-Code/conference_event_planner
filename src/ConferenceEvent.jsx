@@ -17,6 +17,7 @@ const ConferenceEvent = () => {
         console.log("handleToggleItems called");
         setShowItems(!showItems);
     };
+
     // Handles the Increase in quantity of tickets for the venue
     const handleAddToCart = (index) => {
         //If the name within venue is "Auditorium Hall (Capacity:200)" and the qunatity is greater then 3, it returns to the function that called it
@@ -26,6 +27,7 @@ const ConferenceEvent = () => {
         //Runs if the stated if statement is not true
         dispatch(incrementQuantity(index));
       };
+
       //Similar to the handleAddToCart, but it decreases the quantity
       const handleRemoveFromCart = (index) => {
         if (venueItems[index].quantity > 0) {
@@ -51,15 +53,21 @@ const ConferenceEvent = () => {
     const ItemsDisplay = ({ items }) => {
 
     };
+
+    //Calculates the total cost of the room when the increase'+' or Decrease'-' buttons are pressed
+    //Inside of the Venue room Section
     const calculateTotalCost = (section) => {
         let totalCost = 0;
         if (section === "venue") {
+          //forEach function peforms the stated method for each entry in the array 'venueItems'
           venueItems.forEach((item) => {
             totalCost += item.cost * item.quantity;
           });
         }
         return totalCost;
       };
+
+    //Automatically Calculates the total cost of the room when called
     const venueTotalCost = calculateTotalCost("venue");
 
     const navigateToProducts = (idType) => {
@@ -148,6 +156,7 @@ const ConferenceEvent = () => {
             </div>
           ))}
         </div>
+        {/*Displays the total cost of the venue at the bottom of the venue section*/}
         <div className="total_cost">Total Cost: ${venueTotalCost}</div>
       </div>
 
