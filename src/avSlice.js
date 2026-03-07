@@ -42,7 +42,7 @@ export const avSlice = createSlice({
     //Increments Current Item by one if it exists
     incrementAvQuantity: (state, action) => {
       const item = state[action.payload];
-      if (state[index]) {
+      if (item) {
         item.quantity++;
       }
     },
@@ -50,7 +50,7 @@ export const avSlice = createSlice({
     //Decrements Current Item by one if it it exists and is greater than 0
     decrementAvQuantity: (state, action) => {
         const item = state[action.payload];
-        if (state[index] && index.quantity > 0) {
+        if (item && item.quantity > 0) {
           item.quantity--;
         }
     },
