@@ -8,6 +8,8 @@ const ConferenceEvent = () => {
     const [numberOfPeople, setNumberOfPeople] = useState(1);
     // variable pulls infromation and methods from venueSlice.js
     const venueItems = useSelector((state) => state.venue);
+    // variable pulls infromation and methods from avSlice.js
+    const avItems = useSelector((state) => state.av);
     const dispatch = useDispatch();
     //As the name describes, it calculates the remaning number of seats wihin the venue
     const remainingAuditoriumQuantity = 3 - venueItems.find(item => item.name === "Auditorium Hall (Capacity:200)").quantity;
@@ -207,6 +209,12 @@ const ConferenceEvent = () => {
 
 
             </div>
+        <div>        
+            <h1>Add-on Selection</h1>
+        </div>
+        <div className="venue_selection">  
+
+        </div>      
         </>
 
     );
