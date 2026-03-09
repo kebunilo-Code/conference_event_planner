@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { incrementQuantity, decrementQuantity } from "./venueSlice";
 //brings methods from avSlice.js
 import { incrementAvQuantity, decrementAvQuantity } from "./avSlice";
+import { toggleMealSelection } from "./mealsSlice";
 const ConferenceEvent = () => {
     const [showItems, setShowItems] = useState(false);
     const [numberOfPeople, setNumberOfPeople] = useState(1);
@@ -47,9 +48,19 @@ const ConferenceEvent = () => {
     const handleDecrementAvQuantity = (index) => {
         dispatch(decrementAvQuantity(index));
     };
-
+    //If the checkbox is selected with the mealForPeople variable passed
+    //The function will pass both the item, as well as the number of people ordiernig the item
+    //else it passes nothin but the item selected
     const handleMealSelection = (index) => {
-       
+        const item = mealsItems[index];
+        if (item.selected && item.type === "mealForPeople"){
+            //makes sure that if the user does not pass a value, the number of people is set to zero
+            const newNumberOfPeople = item.selected ? numberOfPeople : 0;
+            dispatch(toggleMealSelection(index, newNumberOfPeople));
+        }
+        else {
+            dispatch(toggleMealSelection(index));
+        }
     };
 
     const getItemsFromTotalCost = () => {
@@ -77,6 +88,14 @@ const ConferenceEvent = () => {
             avItems.forEach((item) => {
               totalCost += item.cost * item.quantity;
             });
+          } 
+        else if (section === "meals"){
+            //forEach function peforms the stated method for each entry in the array 'mealsItems'
+            mealsItems.forEach((item) => {
+                if (item.selected){
+                    totalCost += item.cost * numberOfPeople;
+                }
+            });
           }
         return totalCost;
       };
@@ -84,6 +103,8 @@ const ConferenceEvent = () => {
     //Automatically Calculates the total cost of each of the diffrent values that are called
     const venueTotalCost = calculateTotalCost("venue");
     const avTotalCost = calculateTotalCost("av");
+    const mealTotalCost = calculateTotalCost("meals");
+
     const navigateToProducts = (idType) => {
         if (idType == '#venue' || idType == '#addons' || idType == '#meals') {
           if (showItems) { // Check if showItems is false
@@ -235,7 +256,7 @@ const ConferenceEvent = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="total_cost">Total Cost: </div>
+                                <div className="total_cost">Total Cost:{mealTotalCost} </div>
 
 
                             </div>
