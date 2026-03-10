@@ -244,6 +244,7 @@ const ConferenceEvent = () => {
                                         />
                                 </div>
                                 <div className="meal_selection">
+                                    {/* Creates an entry with a checkbox, which uses handleMealSelection to determain if it is selected or not */}
                                     {mealsItems.map((item,index) => (
                                         <div className="meals_item" key={index} style={{padding: 15}}>
                                             <div className="inner">
@@ -257,7 +258,7 @@ const ConferenceEvent = () => {
                                         </div>
                                     ))}
                                 </div>
-                                <div className="total_cost">Total Cost:{mealTotalCost} </div>
+                                <div className="total_cost">Total Cost: ${mealTotalCost} </div>
 
                             </div>
                         </div>
