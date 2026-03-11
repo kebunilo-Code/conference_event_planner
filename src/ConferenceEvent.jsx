@@ -63,15 +63,77 @@ const ConferenceEvent = () => {
             dispatch(toggleMealSelection(index));
         }
     };
-
+    //Creates a list of items to be diplayed in the cart
     const getItemsFromTotalCost = () => {
         const items = [];
+        venueItems.forEach((item) => {
+            //If the Item quantity is greater then zero, the item is included
+            if (item.quantity > 0) {
+                items.push({ ...item, type: "venue"});
+            }
+        });
+        avItems.forEach((item) => {
+            if (item.quantity > 0 && 
+                !items.some((i) => i.name === item.name && i.type === "av")){
+                items.push({ ...item, type: "av"});
+            }
+        });
+        mealsItems.forEach((item) => {
+            //If an item is selected, it will create a new item 
+            if (item.selected) {
+                const itemForDisplay = {...item, type: "meals"};
+                //If the item has a number of people, then the itemForDiplay variabel will set its item for display
+                //At the same vale as the one passed to it
+                if (item.numberOfPeople){
+                    itemForDisplay.numberOfPeople = numberOfPeople;
+                }
+               items.push(itemForDisplay); 
+            }
+        });
+        return items;
     };
 
     const items = getItemsFromTotalCost();
-
+    //Creats a console that producess a table showing all of the items ordered
     const ItemsDisplay = ({ items }) => {
-
+        console.log(items);
+        return<>
+            <div className="display_box1">
+                {items.length === 0 && <p>No items selected</p>}
+                {/*Creats the table Header*/}
+                <table className="table_item_data">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Unit Cost</th>
+                            <th>Quntitiy</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items.map((item,index) => (
+                            <tr key={index}>
+                                <td>{item.name}</td>
+                                <td>{item.cost}</td>
+                                <td>
+                                    {/*If the item type is meals or contains the number of people 
+                                    it will print For ${numberOfPeople} people, else it will print item. quantity*/}
+                                    {item.type === "meals" || item.numberOfPeople
+                                    ? `For ${numberOfPeople} people`
+                                    : item.quantity}
+                                </td>
+                                {/*If the item type is meals or contains the number of people 
+                                    it will diplay the price as cost * the number of people, else it will print cost * the qunatity*/}
+                                <td>{item.type === "meals" || item.numberOfPeople
+                                ? `${item.cost * numberOfPeople}`
+                                : `${item.cost * item.quantity}`}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+        </>
     };
 
     //Calculates the total cost of the room when the increase'+' or Decrease'-' buttons are pressed
@@ -113,6 +175,12 @@ const ConferenceEvent = () => {
           }
         }
       }
+    //Represents the object of totalCost
+    const totalCosts = {
+        venue: venueTotalCost,
+        av: avTotalCost,
+        meals: mealTotalCost,
+    };
 
     return (
         <>
